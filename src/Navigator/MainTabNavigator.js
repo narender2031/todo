@@ -46,4 +46,5 @@ ListStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
+  ListStack
 });

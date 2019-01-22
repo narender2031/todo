@@ -35,7 +35,7 @@ class EditTodoForm extends React.Component{
   }
 
   handleFormUpdate = () => {
-    fetch("https://basic-fact-185408.firebaseio.com/todos/"+this.state.id+".json", {
+    fetch("https://basic-fact-185408.firebaseio.com/todos/"+this.state.id+".json?auth="+this.props.idToken, {
       method: "PATCH",
       body: JSON.stringify(this.state)
     })

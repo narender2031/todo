@@ -40,6 +40,7 @@ class TodoForm extends Component {
   // }
 
   handleAddTodo = () => {
+    
     if (this.state.title && this.state.description){
       
       const TodoData = {
@@ -47,7 +48,7 @@ class TodoForm extends Component {
         description:this.state.description
       }
   
-      fetch("https://basic-fact-185408.firebaseio.com/todos.json", {
+      fetch("https://basic-fact-185408.firebaseio.com/todos.json?auth="+this.props.idToken, {
         method: "POST",
         body: JSON.stringify(TodoData)
       })

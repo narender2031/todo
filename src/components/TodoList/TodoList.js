@@ -9,7 +9,9 @@ class TodoList extends Component {
 
     let title = <Text style={styles.title}>Title: </Text>
     let description = <Text style={styles.title}>Description: </Text>
-    let todoList = <FlatList
+    let todoList = null;
+    if(this.props.todoList){
+      todoList = <FlatList
       data={this.props.todoList}
       renderItem={(info) => (
         <ListingTodo 
@@ -22,8 +24,10 @@ class TodoList extends Component {
         />
         
       )}
-      keyExtractor={(item) => item.id}
-    />
+        keyExtractor={(item) => item.id}
+      />
+    }
+    
     
     return (
       <View style={styles.scrollViewContainer}>

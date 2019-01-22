@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 
 
 // App Component
@@ -19,24 +19,44 @@ export default class App extends React.Component {
     todos: [],
     selectedTodo: null,
     selectEditTodo: null,
+    idToekn: null,
   }
 
   getTodos = () => {
-    fetch("https://basic-fact-185408.firebaseio.com/todos.json")
-    .catch(err=> console.log(err))
-    .then(res => res.json())
-    .then(parseRes => {
-        const todos = []
-        for( let key in parseRes){
-          todos.push({
-            ...parseRes[key],
-            id: key
+    let idToekn = null;
+    AsyncStorage.getItem('Auth:token')
+    .then(res => {
+      console.log('manu    ', res)
+      idToekn = res
+     
+      this.setState({
+        idToekn: res
+      })
+
+      fetch("https://basic-fact-185408.firebaseio.com/todos.json?auth="+res)
+      .catch(err=> console.log(err))
+      .then(res => res.json())
+      .then(parseRes => {
+        if(parseRes.error){
+          console.log(parseRes)
+          alert("Something Went Wrong!")  
+        }else{
+          console.log(parseRes)
+          const todos = []
+          for( let key in parseRes){
+            todos.push({
+              ...parseRes[key],
+              id: key
+            })
+          }
+          this.setState({
+            todos: todos.reverse()
           })
         }
-        this.setState({
-          todos: todos.reverse()
-        })
+          
+      })
     })
+    
   }
 
   componentDidMount = () => {
@@ -66,7 +86,7 @@ export default class App extends React.Component {
   }
 
   handleOnDeleteTodo = (key) => {
-    fetch(`https://basic-fact-185408.firebaseio.com/todos/${key}.json`, {
+    fetch("https://basic-fact-185408.firebaseio.com/todos/"+key+".json?auth="+this.state.idToekn, {
         method: "DELETE",
     })
     .catch(err => console.log(err))
@@ -115,6 +135,7 @@ export default class App extends React.Component {
           selectedEditTodo = {this.state.selectEditTodo}
           onModalClose = {this.handleEditModalClose}
           updateTodoState = {this.handleUpdateTodo}
+          idToken={this.state.idToekn}
         />
       )
     }
@@ -126,12 +147,14 @@ export default class App extends React.Component {
             oncloseRequest = {this.handleCloseRequest}
             onDeleteTodo = {this.handleOnDeleteTodo}
             onEditTodo = {this.handleOnEditTodo}
+            idToken={this.state.idToekn}
         />
         <View style={styles.titleHeadLine}>
           <Text style={styles.headLine}>Add Todo</Text>
         </View>
         <TodoForm 
           addTodo={this.getTodos}
+          idToken={this.state.idToekn}
         />
         <TodoList 
           todoList={this.state.todos}
