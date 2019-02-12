@@ -12,10 +12,41 @@ const LoginStack  = createStackNavigator({
   Login: LoginScreen
 })
 
+
+// const stackNavigator = createStackNavigator({
+//   auth: AuthScreen,
+//   Login: LoginScreen
+// })
+
+
+// Add DeepLink in your app 
+// const SimpleApp = createAppContainer(createStackNavigator({
+//   Home: { screen: HomeScreen },
+//   Chat: {
+//     screen: ChatScreen,
+//     path: 'chat/:user',
+//   },
+// }));
+
+
+// in Expo app : 
+// just add this: 
+// {
+//   "expo": {
+//     "scheme": "mychat"
+//   }
+// }
+
+// const prefix = Expo.Linking.makeUrl('/');
+
+// const MainApp = () => <SimpleApp uriPrefix={prefix} />;
+
 export default createAppContainer(createSwitchNavigator({
   main: MainTabNavigator,
   auth: AuthStack,
-  Login: LoginStack
+  Login: LoginStack,
+  
+  // stackNavigator: stackNavigator
 },{
   initialRouteName: "Login"
 }

@@ -26,7 +26,7 @@ export default class App extends React.Component {
     let idToekn = null;
     AsyncStorage.getItem('Auth:token')
     .then(res => {
-      console.log('manu    ', res)
+      console.log(res)
       idToekn = res
      
       this.setState({
